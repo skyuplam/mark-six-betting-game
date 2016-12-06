@@ -1,4 +1,4 @@
-# Introduction
+# Introduction [![Build Status](https://travis-ci.org/skyuplam/mark-six-betting-game.svg?branch=master)](https://travis-ci.org/skyuplam/mark-six-betting-game)
 
 An implementation of calculating the profit and loss from
 betting mark-six game.
