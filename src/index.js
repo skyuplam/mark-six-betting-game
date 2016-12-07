@@ -7,6 +7,12 @@ import { useScroll } from 'react-router-scroll';
 import App from './containers/App';
 import createRoutes from './routes';
 import configureStore from './store';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
+// Needed for onTouchTap
+// http://stackoverflow.com/a/34015469/988941
+injectTapEventPlugin();
 
 // Import Language Provider
 import LanguageProvider from './containers/LanguageProvider';
@@ -31,15 +37,17 @@ const rootRoute = {
 const render = (messages) =>
   ReactDOM.render(
     <Provider store={store}>
-      <LanguageProvider messages={messages}>
-        <Router
-          history={history}
-          routes={rootRoute}
-          render={
-            applyRouterMiddleware(useScroll())
-          }
-        />
-      </LanguageProvider>
+      <MuiThemeProvider>
+        <LanguageProvider messages={messages}>
+          <Router
+            history={history}
+            routes={rootRoute}
+            render={
+              applyRouterMiddleware(useScroll())
+            }
+          />
+        </LanguageProvider>
+      </MuiThemeProvider>
     </Provider>,
     document.getElementById('root')
   );
