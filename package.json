@@ -5,7 +5,10 @@
   "license": "MIT",
   "private": true,
   "devDependencies": {
-    "react-scripts": "0.8.1"
+    "enzyme": "^2.6.0",
+    "react-addons-test-utils": "^15.4.1",
+    "react-scripts": "0.8.1",
+    "sinon": "^1.17.6"
   },
   "dependencies": {
     "immutable": "^3.8.1",
