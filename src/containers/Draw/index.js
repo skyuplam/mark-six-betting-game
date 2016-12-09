@@ -5,9 +5,6 @@ import { injectIntl, FormattedDate } from 'react-intl';
 import {
   isEmpty,
 } from 'lodash';
-import {
-  format,
-} from 'date-fns';
 import NewBetForm from '../../components/NewBetForm';
 import DataGrid from '../../components/DataGrid';
 import {
