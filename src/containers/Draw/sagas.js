@@ -20,6 +20,7 @@ import {
 } from './actions';
 import {
   selectNewBet,
+  selectCurrentDrawId,
 } from './selectors';
 import config from '../../config';
 import {
@@ -30,6 +31,7 @@ import {
 export function* bet() {
   const { db } = config;
   const newBet = yield select(selectNewBet());
+  const currentDrawId = yield select(selectCurrentDrawId());
   const requestURL = join([db.url, 'betting'], '/');
 
   try {
@@ -40,6 +42,7 @@ export function* bet() {
       },
       body: JSON.stringify(assign({}, newBet, {
         bettedAt: new Date(),
+        drawId: currentDrawId,
       })),
     });
     const betsURI = join([requestURL, '_all_docs'], '/');
