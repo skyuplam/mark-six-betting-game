@@ -1,11 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-import { useScroll } from 'react-router-scroll';
 import App from './containers/App';
-import createRoutes from './routes';
 import configureStore from './store';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -22,30 +18,14 @@ import { translationMessages } from './i18n';
 
 
 const initialState = {};
-const store = configureStore(initialState, browserHistory);
-
-import { selectLocationState } from './containers/App/selectors';
-const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: selectLocationState(),
-});
-
-const rootRoute = {
-  component: App,
-  childRoutes: createRoutes(store),
-};
+const store = configureStore(initialState);
 
 const render = (messages) =>
   ReactDOM.render(
     <Provider store={store}>
       <MuiThemeProvider>
         <LanguageProvider messages={messages}>
-          <Router
-            history={history}
-            routes={rootRoute}
-            render={
-              applyRouterMiddleware(useScroll())
-            }
-          />
+          <App />
         </LanguageProvider>
       </MuiThemeProvider>
     </Provider>,

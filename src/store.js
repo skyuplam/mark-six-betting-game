@@ -4,9 +4,10 @@ import {
   compose,
 } from 'redux';
 import { fromJS } from 'immutable';
-import { routerMiddleware } from 'react-router-redux';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
+
+import homeSagas from './containers/HomePage/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -16,7 +17,6 @@ export default function configureStore(initialState = {}, history) {
   // 2. routerMiddleware: Syncs the location/URL path to the state
   const middlewares = [
     sagaMiddleware,
-    routerMiddleware(history),
   ];
 
   const enhancers = [
@@ -39,8 +39,7 @@ export default function configureStore(initialState = {}, history) {
   );
 
   // Extensions
-  store.runSaga = sagaMiddleware.run;
-  store.asyncReducers = {}; // Async reducer registry
+   homeSagas.map(sagaMiddleware.run);
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   /* istanbul ignore next */
