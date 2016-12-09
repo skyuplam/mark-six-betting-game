@@ -27,6 +27,9 @@ import {
   selectDraw,
 } from './selectors';
 import config from '../../config';
+import {
+  assign,
+} from 'lodash';
 
 
 export function* getDraws() {
@@ -52,7 +55,9 @@ export function* createNewDraw() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(newDraw),
+      body: JSON.stringify(assign({}, newDraw, {
+        createdAt: new Date(),
+      })),
     });
     const drawWithDetail = yield call(request, join([requestURL, draw.id], '/'));
     yield put(drawCreated(drawWithDetail));

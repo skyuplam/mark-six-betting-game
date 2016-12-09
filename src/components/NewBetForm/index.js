@@ -23,6 +23,7 @@ const NewBetForm = ({
   betHandler = () => {},
   gameTypeLabel = 'Game Type',
   gameTypes = [{ _id: 1, desc: 'Type' }],
+  gameType,
   gameTypeHandler = () => {},
   submitButtonLabel = 'Submit',
   submitHandler = () => {},
@@ -40,10 +41,11 @@ const NewBetForm = ({
       /><br />
       <SelectField
         floatingLabelText={gameTypeLabel}
+        value={gameType}
         onChange={gameTypeHandler}
       >
         {gameTypes.map((g) => (
-          <MenuItem key={g._id} value={g._id} primaryText={g.desc} />
+          <MenuItem key={g.type} value={g.type} primaryText={g.type} />
         ))}
       </SelectField>
       <FlatButton

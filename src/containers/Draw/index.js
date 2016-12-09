@@ -11,8 +11,10 @@ import {
 } from './actions';
 import {
   selectCurrentDraw,
+  selectGameType,
 } from './selectors';
 import msg from './messages';
+import { gameTypes } from './games';
 
 
 export class Draw extends React.PureComponent {
@@ -28,6 +30,7 @@ export class Draw extends React.PureComponent {
       onChangeNewBetAmount,
       onChangeNewBetGameType,
       onSubmitNewBet,
+      gameType,
     } = this.props;
     const {
       formatMessage,
@@ -41,7 +44,8 @@ export class Draw extends React.PureComponent {
           betAmountHintText={formatMessage(msg.betAmountHintText)}
           betHandler={onChangeNewBetAmount}
           gameTypeLabel={formatMessage(msg.gameTypeLabel)}
-          gameTypes={[]}
+          gameTypes={gameTypes}
+          gameType={gameType}
           gameTypeHandler={(evt, key, payload) => onChangeNewBetGameType(payload)}
           submitButtonLabel={formatMessage(msg.submitButtonLabel)}
           submitHandler={onSubmitNewBet}
@@ -53,6 +57,7 @@ export class Draw extends React.PureComponent {
 
 const mapStateToProps = createStructuredSelector({
   draw: selectCurrentDraw(),
+  gameType: selectGameType(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

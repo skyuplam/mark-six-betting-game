@@ -15,9 +15,21 @@ const selectCurrentDraw = () => createSelector(
   (drawId, gState) => gState.getIn(['draws', drawId]),
 );
 
+const selectNewBet = () => createSelector(
+  selectDrawState(),
+  (draw) => draw.get('newBet').toJS(),
+);
+
+const selectGameType = () => createSelector(
+  selectNewBet(),
+  (newBet) => newBet.gameType,
+);
+
 
 export {
   selectDrawState,
   selectCurrentDrawId,
   selectCurrentDraw,
+  selectNewBet,
+  selectGameType,
 }

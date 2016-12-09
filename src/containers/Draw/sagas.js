@@ -19,56 +19,46 @@ import {
   bettingError,
 } from './actions';
 import {
-  selectDraw,
+  selectNewBet,
 } from './selectors';
 import config from '../../config';
+import {
+  assign,
+} from 'lodash';
 
 
-export function* getDraws() {
+export function* bet() {
   const { db } = config;
-  const requestURL = join([join([db.url, 'draw', '_all_docs'], '/'), 'include_docs=true'], '?');
+  const newBet = yield select(selectNewBet());
+  const requestURL = join([db.url, 'betting'], '/');
 
   try {
-    const draws = yield call(request, requestURL);
-    yield put(drawsFetched(draws));
-  } catch (err) {
-    yield put(drawsFetchingError(err));
-  }
-}
-
-export function* createNewDraw() {
-  const { db } = config;
-  const newDraw = yield select(selectDraw());
-  const requestURL = join([db.url, 'draw'], '/');
-
-  try {
-    const draw = yield call(request, requestURL, {
+    yield call(request, requestURL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(newDraw),
+      body: JSON.stringify(assign({}, newBet, {
+        bettedAt: new Date(),
+      })),
     });
-    const drawWithDetail = yield call(request, join([requestURL, draw.id], '/'));
-    yield put(drawCreated(drawWithDetail));
+    const betsURI = join([requestURL, '_all_docs'], '/');
+    const betsWithAllDocs = join([betsURI, 'include_docs=true'], '?');
+    const bets = yield call(request, betsWithAllDocs);
+    yield put(betted(bets.rows));
   } catch (err) {
-    yield put(drawCreatingError(err));
+    yield put(bettingError(err));
   }
 }
 
-export function* getDrawsWatcher() {
-  yield fork(takeLatest, FETCH_DRAWS, getDraws);
-}
-
-export function* createNewDrawWatcher() {
-  yield fork(takeLatest, NEW_DRAW, createNewDraw);
+export function* betWatcher() {
+  yield fork(takeLatest, NEW_BET, bet);
 }
 
 export function* DrawData() {
   // Fork watcher so we can continue execution
   yield [
-    getDrawsWatcher(),
-    createNewDrawWatcher(),
+    betWatcher(),
   ];
 }
 

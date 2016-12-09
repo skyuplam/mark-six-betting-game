@@ -8,6 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import createReducer from './reducers';
 
 import homeSagas from './containers/HomePage/sagas';
+import drawSagas from './containers/Draw/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -40,6 +41,7 @@ export default function configureStore(initialState = {}, history) {
 
   // Extensions
    homeSagas.map(sagaMiddleware.run);
+   drawSagas.map(sagaMiddleware.run);
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   /* istanbul ignore next */

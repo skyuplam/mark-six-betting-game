@@ -18,9 +18,9 @@ export const updateNewBetAmount = (betAmount) => ({
   betAmount,
 });
 
-export const updateNewBetGameType = (gameTypeId) => ({
+export const updateNewBetGameType = (gameType) => ({
   type: UPDATE_NEW_BET_GAME_TYPE,
-  gameTypeId,
+  gameType,
 });
 
 export const newBet = () => ({
