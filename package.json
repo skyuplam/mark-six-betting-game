@@ -13,7 +13,6 @@
   "dependencies": {
     "date-fns": "^1.16.0",
     "griddle-react": "^0.7.1",
-    "history": "^4.4.1",
     "immutable": "^3.8.1",
     "intl": "^1.2.5",
     "invariant": "^2.2.2",
