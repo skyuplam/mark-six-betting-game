@@ -12,11 +12,14 @@ import request from '../../utils/request';
 
 import {
   NEW_BET,
+  FETCH_BETS,
 } from './constants';
 
 import {
   betted,
   bettingError,
+  betsFetched,
+  betsFetchingError,
 } from './actions';
 import {
   selectNewBet,
@@ -45,12 +48,46 @@ export function* bet() {
         drawId: currentDrawId,
       })),
     });
-    const betsURI = join([requestURL, '_all_docs'], '/');
-    const betsWithAllDocs = join([betsURI, 'include_docs=true'], '?');
-    const bets = yield call(request, betsWithAllDocs);
-    yield put(betted(bets.rows));
+    const betsURI = join([requestURL, '_find'], '/');
+    const bets = yield call(request, betsURI, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        selector: {
+          drawId: currentDrawId,
+        },
+        limit: 1000,
+      }),
+    });
+    yield put(betted(bets.docs));
   } catch (err) {
     yield put(bettingError(err));
+  }
+}
+
+export function* fetchBets() {
+  const { db } = config;
+  const currentDrawId = yield select(selectCurrentDrawId());
+  const requestURL = join([db.url, 'betting', '_find'], '/');
+
+  try {
+    const bets = yield call(request, requestURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        selector: {
+          drawId: currentDrawId,
+        },
+        limit: 1000,
+      }),
+    });
+    yield put(betsFetched(bets.docs));
+  } catch (err) {
+    yield put(betsFetchingError(err));
   }
 }
 
@@ -58,10 +95,15 @@ export function* betWatcher() {
   yield fork(takeLatest, NEW_BET, bet);
 }
 
+export function* fetchBetsWatcher() {
+  yield fork(takeLatest, FETCH_BETS, fetchBets);
+}
+
 export function* DrawData() {
   // Fork watcher so we can continue execution
   yield [
     betWatcher(),
+    fetchBetsWatcher(),
   ];
 }
 

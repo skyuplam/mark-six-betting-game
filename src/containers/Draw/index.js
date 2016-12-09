@@ -1,17 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { injectIntl } from 'react-intl';
+import { injectIntl, FormattedDate } from 'react-intl';
+import {
+  isEmpty,
+} from 'lodash';
+import {
+  format,
+} from 'date-fns';
 import NewBetForm from '../../components/NewBetForm';
+import DataGrid from '../../components/DataGrid';
 import {
   updateCurrentDrawID,
   updateNewBetAmount,
   updateNewBetGameType,
   newBet,
+  fetchBets,
 } from './actions';
 import {
   selectCurrentDraw,
   selectGameType,
+  selectBets,
 } from './selectors';
 import msg from './messages';
 import { gameTypes } from './games';
@@ -31,6 +40,7 @@ export class Draw extends React.PureComponent {
       onChangeNewBetGameType,
       onSubmitNewBet,
       gameType,
+      bets,
     } = this.props;
     const {
       formatMessage,
@@ -50,6 +60,27 @@ export class Draw extends React.PureComponent {
           submitButtonLabel={formatMessage(msg.submitButtonLabel)}
           submitHandler={onSubmitNewBet}
         />
+        {isEmpty(bets) ? null :
+          <DataGrid
+            results={bets}
+            columns={[
+              'bettedAt',
+              'gameType',
+              'betAmount',
+            ]}
+            columnMetadata={[
+              {
+                columnName: 'bettedAt',
+                displayName: formatMessage(msg.bettedAt),
+                customComponent: (props) => (
+                  <FormattedDate
+                    value={props.data}
+                  />
+                ),
+              },
+            ]}
+          />
+        }
       </div>
     );
   }
@@ -58,10 +89,14 @@ export class Draw extends React.PureComponent {
 const mapStateToProps = createStructuredSelector({
   draw: selectCurrentDraw(),
   gameType: selectGameType(),
+  bets: selectBets(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onLoadComponent: (props) => dispatch(updateCurrentDrawID(props.params.id)),
+  onLoadComponent: (props) => {
+    dispatch(updateCurrentDrawID(props.params.id));
+    dispatch(fetchBets());
+  },
   onChangeNewBetAmount: (evt) => dispatch(updateNewBetAmount(evt.target.value)),
   onChangeNewBetGameType: (gameTypeId) => dispatch(updateNewBetGameType(gameTypeId)),
   onSubmitNewBet: () => dispatch(newBet()),

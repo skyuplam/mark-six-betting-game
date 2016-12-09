@@ -21,4 +21,16 @@ export default defineMessages({
     id: 'mark-six.containers.Draw.NewBetForm.submitButtonLabel',
     defaultMessage: 'Add',
   },
+  bettedAt: {
+    id: 'mark-six.containers.Draw.bettedAt',
+    defaultMessage: 'Betted At',
+  },
+  gameType: {
+    id: 'mark-six.containers.Draw.gameType',
+    defaultMessage: 'Game Type',
+  },
+  amount: {
+    id: 'mark-six.containers.Draw.amount',
+    defaultMessage: 'Amount',
+  },
 });

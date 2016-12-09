@@ -5,6 +5,9 @@ import {
   NEW_BET,
   NEW_BET_SUCCESS,
   NEW_BET_ERROR,
+  FETCH_BETS,
+  FETCH_BETS_SUCCESS,
+  FETCH_BETS_ERROR,
 } from './constants';
 
 
@@ -34,5 +37,20 @@ export const betted = (bets) => ({
 
 export const bettingError = (error) => ({
   type: NEW_BET_ERROR,
+  error,
+});
+
+
+export const fetchBets = () => ({
+  type: FETCH_BETS,
+});
+
+export const betsFetched = (bets) => ({
+  type: FETCH_BETS_SUCCESS,
+  bets,
+});
+
+export const betsFetchingError = (error) => ({
+  type: FETCH_BETS_ERROR,
   error,
 });

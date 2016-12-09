@@ -25,6 +25,10 @@ const selectGameType = () => createSelector(
   (newBet) => newBet.gameType,
 );
 
+const selectBets = () => createSelector(
+  selectDrawState(),
+  (draw) => draw.get('bets').toArray(),
+);
 
 export {
   selectDrawState,
@@ -32,4 +36,5 @@ export {
   selectCurrentDraw,
   selectNewBet,
   selectGameType,
+  selectBets,
 }

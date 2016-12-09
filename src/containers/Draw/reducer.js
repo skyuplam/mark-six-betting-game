@@ -4,6 +4,7 @@ import {
   UPDATE_NEW_BET_AMOUNT,
   UPDATE_NEW_BET_GAME_TYPE,
   NEW_BET_SUCCESS,
+  FETCH_BETS_SUCCESS,
 } from './constants';
 import {
   reduce,
@@ -31,8 +32,9 @@ function drawReducer(state = initialState, action) {
       return state
         .set('currentDrawId', action.drawId);
     case NEW_BET_SUCCESS:
+    case FETCH_BETS_SUCCESS:
       return state
-        .set('bets', reduce(action.bets, (bets, bet) => bets.set(bet.id, bet.doc), Map()));
+        .set('bets', reduce(action.bets, (bets, bet) => bets.set(bet._id, bet), Map()));
     default:
       return state;
   }

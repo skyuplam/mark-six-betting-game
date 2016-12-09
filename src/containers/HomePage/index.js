@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import Griddel from 'griddle-react';
+// import Griddel from 'griddle-react';
 import { createStructuredSelector } from 'reselect';
 import { injectIntl } from 'react-intl';
 import {
@@ -23,6 +23,7 @@ import NewDrawForm from '../../components/NewDrawForm';
 import msg from './messages';
 import DateButton from '../../components/DateButtonComponent';
 import ResultComponent from '../../components/ResultComponent';
+import DataGrid from '../../components/DataGrid';
 
 
 export class HomePage extends React.PureComponent {
@@ -76,7 +77,7 @@ export class HomePage extends React.PureComponent {
           newDrawButtonHandler={onClickNewDraw}
         />
         {isEmpty(draws) ? null :
-          <Griddel
+          <DataGrid
             results={draws}
             columns={[
               'drawDate',
