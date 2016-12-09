@@ -17,8 +17,10 @@ import {
 import {
   selectShowMenu,
 } from './selectors';
-import { BrowserRouter, Match } from 'react-router';
+import { BrowserRouter, Match, Miss, Link } from 'react-router';
 import Home from '../HomePage';
+import Draw from '../Draw';
+import NotFound from '../NotFoundPage';
 
 const AppWrapper = styled.div`
   margin: 0;
@@ -36,7 +38,7 @@ function App(props) {
         title={`Mark Six P&L`}
       />
       <AppBar
-        title="Title"
+        title="Mark Six P&L"
         iconClassNameRight="muidocs-icon-navigation-expand-more"
         iconElementLeft={
           <IconButton
@@ -46,15 +48,30 @@ function App(props) {
           </IconButton>
         }
       />
-      <Drawer
-        docked={false}
-        open={showMenu}
-        onRequestChange={onClickMenuIcon}
-      >
-        <MenuItem>Menu Item</MenuItem>
-      </Drawer>
       <BrowserRouter>
-        <Match exactly pattern="/" component={Home} />
+        <div>
+          <Drawer
+            docked={false}
+            open={showMenu}
+            onRequestChange={onClickMenuIcon}
+          >
+            <Link to="/">
+              {(param) => (
+                <MenuItem
+                  onClick={(evt) => {
+                    param.onClick(evt);
+                    onClickMenuIcon(evt);
+                  }}
+                >
+                  Home
+                </MenuItem>
+              )}
+            </Link>
+          </Drawer>
+          <Match exactly pattern="/" component={Home} />
+          <Match pattern="/draw/:id" component={Draw} />
+          <Miss component={NotFound}/>
+        </div>
       </BrowserRouter>
     </AppWrapper>
   )
