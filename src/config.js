@@ -1,6 +1,6 @@
 const config = {
   db: {
-    url: 'http://localhost:32769',
+    url: 'http://146.185.133.230:5984',
   }
 }
 
