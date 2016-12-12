@@ -8,6 +8,7 @@ import {
 } from './constants';
 import {
   reduce,
+  toNumber,
 } from 'lodash';
 
 // The initial state of the App
@@ -24,7 +25,7 @@ function drawReducer(state = initialState, action) {
   switch (action.type) {
     case UPDATE_NEW_BET_AMOUNT:
       return state
-        .setIn(['newBet', 'betAmount'], action.betAmount);
+        .setIn(['newBet', 'betAmount'], toNumber(action.betAmount));
     case UPDATE_NEW_BET_GAME_TYPE:
       return state
         .setIn(['newBet', 'gameType'], action.gameType);

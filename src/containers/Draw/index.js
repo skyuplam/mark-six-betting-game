@@ -7,6 +7,7 @@ import {
 } from 'lodash';
 import NewBetForm from '../../components/NewBetForm';
 import DataGrid from '../../components/DataGrid';
+import BetSummary from '../../components/BetSummary';
 import {
   updateCurrentDrawID,
   updateNewBetAmount,
@@ -18,6 +19,7 @@ import {
   selectCurrentDraw,
   selectGameType,
   selectBets,
+  selectBetsSummary,
 } from './selectors';
 import msg from './messages';
 import { gameTypes } from './games';
@@ -38,6 +40,7 @@ export class Draw extends React.PureComponent {
       onSubmitNewBet,
       gameType,
       bets,
+      betsStat,
     } = this.props;
     const {
       formatMessage,
@@ -58,25 +61,32 @@ export class Draw extends React.PureComponent {
           submitHandler={onSubmitNewBet}
         />
         {isEmpty(bets) ? null :
-          <DataGrid
-            results={bets}
-            columns={[
-              'bettedAt',
-              'gameType',
-              'betAmount',
-            ]}
-            columnMetadata={[
-              {
-                columnName: 'bettedAt',
-                displayName: formatMessage(msg.bettedAt),
-                customComponent: (props) => (
-                  <FormattedDate
-                    value={props.data}
-                  />
-                ),
-              },
-            ]}
-          />
+          <div>
+            <BetSummary
+              header={'Bet Summary'}
+              results={betsStat}
+            />
+            <DataGrid
+              header={'Bet Data'}
+              results={bets}
+              columns={[
+                'bettedAt',
+                'gameType',
+                'betAmount',
+              ]}
+              columnMetadata={[
+                {
+                  columnName: 'bettedAt',
+                  displayName: formatMessage(msg.bettedAt),
+                  customComponent: (props) => (
+                    <FormattedDate
+                      value={props.data}
+                    />
+                  ),
+                },
+              ]}
+            />
+          </div>
         }
       </div>
     );
@@ -87,6 +97,7 @@ const mapStateToProps = createStructuredSelector({
   draw: selectCurrentDraw(),
   gameType: selectGameType(),
   bets: selectBets(),
+  betsStat: selectBetsSummary(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
