@@ -4,4 +4,10 @@ const config = {
   }
 }
 
+const env = process.env.NODE_ENV;
+if (env !== 'production') {
+  config.db.url = 'http://localhost:32769'
+}
+
+
 export default config;
