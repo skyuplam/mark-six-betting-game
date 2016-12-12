@@ -1,31 +1,33 @@
 import {
   range,
+  map,
+  toString,
 } from 'lodash';
 
-export const SPECIAL_DRAW_E = 'SpecialDrawE';
-export const SPECIAL_DRAW_A = 'SpecialDrawA';
-export const SPECIAL_DRAW_LARGE_SMALL = 'SpecialDrawLargeSmall';
+export const SPECIAL_NUMBER_E = 'SNE';
+export const SPECIAL_NUMBER_A = 'SNA';
+export const SPECIAL_NUMBER_LARGE_SMALL = 'SNLargeSmall';
 
 export const gameTypes = [
   {
-    type: SPECIAL_DRAW_E,
-    desc: 'Special Draw E',
+    type: SPECIAL_NUMBER_E,
+    desc: 'Special Number E',
   },
   {
-    type: SPECIAL_DRAW_A,
-    desc: 'Special Draw A',
+    type: SPECIAL_NUMBER_A,
+    desc: 'Special Number A, (10% secured)',
   },
   {
-    type: SPECIAL_DRAW_LARGE_SMALL,
-    desc: 'Special Draw Large (26-49) / Small (1-24) / Draw (25)',
+    type: SPECIAL_NUMBER_LARGE_SMALL,
+    desc: 'Special Number Large (26-49) / Small (1-24) / Number (25)',
   },
 ];
 
 export const gameBets = (type) => {
   switch (type) {
-    case SPECIAL_DRAW_LARGE_SMALL:
+    case SPECIAL_NUMBER_LARGE_SMALL:
       return ['Large', 'Small', 'Draw'];
     default:
-      return range(1, 50);
+      return map(range(1, 50), (d) => toString(d));
   }
 }

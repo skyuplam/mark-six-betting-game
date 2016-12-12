@@ -37,4 +37,24 @@ export default defineMessages({
     id: 'mark-six.containers.Draw.amount',
     defaultMessage: 'Amount',
   },
+  sum: {
+    id: 'mark-six.containers.Draw.sum',
+    defaultMessage: 'Sum',
+  },
+  count: {
+    id: 'mark-six.containers.Draw.count',
+    defaultMessage: 'Count',
+  },
+  min: {
+    id: 'mark-six.containers.Draw.min',
+    defaultMessage: 'Min',
+  },
+  max: {
+    id: 'mark-six.containers.Draw.max',
+    defaultMessage: 'Max',
+  },
+  mean: {
+    id: 'mark-six.containers.Draw.mean',
+    defaultMessage: 'Mean',
+  },
 });

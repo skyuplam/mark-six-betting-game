@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { injectIntl, FormattedDate } from 'react-intl';
+import { injectIntl, FormattedDate, FormattedNumber } from 'react-intl';
 import {
   isEmpty,
   toNumber,
@@ -53,6 +53,83 @@ export class Draw extends React.PureComponent {
     const {
       formatMessage,
     } = this.props.intl;
+
+    const betSummaryColMeta = [{
+      columnName: 'sum',
+      displayName: formatMessage(msg.sum),
+      customComponent: (props) => (
+        <FormattedNumber
+          value={props.data}
+          maximumFractionDigits={2}
+        />
+      ),
+    }, {
+      columnName: 'min',
+      displayName: formatMessage(msg.min),
+      customComponent: (props) => (
+        <FormattedNumber
+          value={props.data}
+          maximumFractionDigits={2}
+        />
+      ),
+    }, {
+      columnName: 'max',
+      displayName: formatMessage(msg.max),
+      customComponent: (props) => (
+        <FormattedNumber
+          value={props.data}
+          maximumFractionDigits={2}
+        />
+      ),
+    }, {
+      columnName: 'mean',
+      displayName: formatMessage(msg.mean),
+      customComponent: (props) => (
+        <FormattedNumber
+          value={props.data}
+          maximumFractionDigits={2}
+        />
+      ),
+    }, {
+      columnName: 'count',
+      displayName: formatMessage(msg.count),
+      customComponent: (props) => (
+        <FormattedNumber
+          value={props.data}
+        />
+      ),
+    }];
+
+    const betsColMeta = [
+      {
+        columnName: 'bettedAt',
+        displayName: formatMessage(msg.bettedAt),
+        customComponent: (props) => (
+          <FormattedDate
+            value={props.data}
+          />
+        ),
+      },
+      {
+        columnName: 'gameType',
+        displayName: formatMessage(msg.gameTypeLabel),
+      },
+      {
+        columnName: 'betAmount',
+        displayName: formatMessage(msg.betAmountLabel),
+        customComponent: (props) => (
+          <FormattedNumber
+            value={props.data}
+            maximumFractionDigits={2}
+          />
+        ),
+      },
+      {
+        columnName: 'betOn',
+        displayName: formatMessage(msg.betOnLabel),
+      },
+    ];
+
     return (
       <div>
         <h1>Draw</h1>
@@ -78,6 +155,10 @@ export class Draw extends React.PureComponent {
             <BetSummary
               header={'Bet Summary'}
               results={betsStat}
+              columnMetadata={betSummaryColMeta}
+              bodyHeight={100}
+              useFixedHeader
+              enableInfiniteScroll
             />
             <DataGrid
               header={'Bet Data'}
@@ -86,18 +167,12 @@ export class Draw extends React.PureComponent {
                 'bettedAt',
                 'gameType',
                 'betAmount',
+                'betOn',
               ]}
-              columnMetadata={[
-                {
-                  columnName: 'bettedAt',
-                  displayName: formatMessage(msg.bettedAt),
-                  customComponent: (props) => (
-                    <FormattedDate
-                      value={props.data}
-                    />
-                  ),
-                },
-              ]}
+              columnMetadata={betsColMeta}
+              bodyHeight={100}
+              useFixedHeader
+              enableInfiniteScroll
             />
           </div>
         }
@@ -120,12 +195,11 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(updateCurrentDrawID(props.params.id));
     dispatch(fetchBets());
   },
-  // onChangeNewBetAmount: (evt) => dispatch(updateNewBetAmount(evt.target.value)),
   onChangeNewBetAmount: (evt) => dispatch(updateNewBet({
     betAmount: toNumber(evt.target.value),
   })),
   onChangeNewBetGameType: (gameType) => dispatch(updateNewBet({
-    gameType: gameType
+    gameType: gameType,
   })),
   onChangeNewBetBetOn: (betOn) => dispatch(updateNewBet({
     betOn: betOn,

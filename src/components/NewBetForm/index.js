@@ -8,8 +8,6 @@ import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import {
   range,
-  isUndefined,
-  isEmpty,
   every,
 } from 'lodash';
 
