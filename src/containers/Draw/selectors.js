@@ -31,9 +31,19 @@ const selectNewBet = () => createSelector(
   (draw) => draw.get('newBet').toJS(),
 );
 
+const selectBetAmount = () => createSelector(
+  selectNewBet(),
+  (newBet) => newBet.betAmount,
+);
+
 const selectGameType = () => createSelector(
   selectNewBet(),
   (newBet) => newBet.gameType,
+);
+
+const selectBetOn = () => createSelector(
+  selectNewBet(),
+  (newBet) => newBet.betOn,
 );
 
 const selectBets = () => createSelector(
@@ -70,6 +80,8 @@ export {
   selectCurrentDrawId,
   selectCurrentDraw,
   selectNewBet,
+  selectBetOn,
+  selectBetAmount,
   selectGameType,
   selectBets,
   selectBetsSummary,

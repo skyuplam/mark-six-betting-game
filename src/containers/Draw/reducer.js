@@ -1,34 +1,27 @@
 import { fromJS, Map } from 'immutable';
 import {
   UPDATE_CURRENT_DRAW_ID,
-  UPDATE_NEW_BET_AMOUNT,
-  UPDATE_NEW_BET_GAME_TYPE,
+  UPDATE_NEW_BET,
   NEW_BET_SUCCESS,
   FETCH_BETS_SUCCESS,
 } from './constants';
 import {
   reduce,
-  toNumber,
+  assign,
 } from 'lodash';
 
 // The initial state of the App
 const initialState = fromJS({
   currentDrawId: '',
   bets: fromJS({}),
-  newBet: fromJS({
-    betAmount: 0,
-    gameType: undefined,
-  }),
+  newBet: fromJS({}),
 });
 
 function drawReducer(state = initialState, action) {
   switch (action.type) {
-    case UPDATE_NEW_BET_AMOUNT:
+    case UPDATE_NEW_BET:
       return state
-        .setIn(['newBet', 'betAmount'], toNumber(action.betAmount));
-    case UPDATE_NEW_BET_GAME_TYPE:
-      return state
-        .setIn(['newBet', 'gameType'], action.gameType);
+        .set('newBet', fromJS(assign(state.get('newBet').toJS(), action.bet)));
     case UPDATE_CURRENT_DRAW_ID:
       return state
         .set('currentDrawId', action.drawId);

@@ -4,25 +4,30 @@ import { createStructuredSelector } from 'reselect';
 import { injectIntl, FormattedDate } from 'react-intl';
 import {
   isEmpty,
+  toNumber,
 } from 'lodash';
 import NewBetForm from '../../components/NewBetForm';
 import DataGrid from '../../components/DataGrid';
 import BetSummary from '../../components/BetSummary';
 import {
   updateCurrentDrawID,
-  updateNewBetAmount,
-  updateNewBetGameType,
+  updateNewBet,
   newBet,
   fetchBets,
 } from './actions';
 import {
   selectCurrentDraw,
+  selectBetAmount,
   selectGameType,
+  selectBetOn,
   selectBets,
   selectBetsSummary,
 } from './selectors';
 import msg from './messages';
-import { gameTypes } from './games';
+import {
+  gameTypes,
+  gameBets
+} from './games';
 
 
 export class Draw extends React.PureComponent {
@@ -37,8 +42,11 @@ export class Draw extends React.PureComponent {
     const {
       onChangeNewBetAmount,
       onChangeNewBetGameType,
+      onChangeNewBetBetOn,
       onSubmitNewBet,
+      betAmount,
       gameType,
+      betOn,
       bets,
       betsStat,
     } = this.props;
@@ -50,6 +58,7 @@ export class Draw extends React.PureComponent {
         <h1>Draw</h1>
         <NewBetForm
           formHeading={formatMessage(msg.formHeading)}
+          betAmount={betAmount}
           betAmountLabel={formatMessage(msg.betAmountLabel)}
           betAmountHintText={formatMessage(msg.betAmountHintText)}
           betHandler={onChangeNewBetAmount}
@@ -57,6 +66,10 @@ export class Draw extends React.PureComponent {
           gameTypes={gameTypes}
           gameType={gameType}
           gameTypeHandler={(evt, key, payload) => onChangeNewBetGameType(payload)}
+          betOnLabel={formatMessage(msg.betOnLabel)}
+          betOn={betOn}
+          betOnNumbers={gameBets(gameType)}
+          betOnHandler={(evt, key, payload) => onChangeNewBetBetOn(payload)}
           submitButtonLabel={formatMessage(msg.submitButtonLabel)}
           submitHandler={onSubmitNewBet}
         />
@@ -95,7 +108,9 @@ export class Draw extends React.PureComponent {
 
 const mapStateToProps = createStructuredSelector({
   draw: selectCurrentDraw(),
+  betAmount: selectBetAmount(),
   gameType: selectGameType(),
+  betOn: selectBetOn(),
   bets: selectBets(),
   betsStat: selectBetsSummary(),
 });
@@ -105,8 +120,16 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(updateCurrentDrawID(props.params.id));
     dispatch(fetchBets());
   },
-  onChangeNewBetAmount: (evt) => dispatch(updateNewBetAmount(evt.target.value)),
-  onChangeNewBetGameType: (gameTypeId) => dispatch(updateNewBetGameType(gameTypeId)),
+  // onChangeNewBetAmount: (evt) => dispatch(updateNewBetAmount(evt.target.value)),
+  onChangeNewBetAmount: (evt) => dispatch(updateNewBet({
+    betAmount: toNumber(evt.target.value),
+  })),
+  onChangeNewBetGameType: (gameType) => dispatch(updateNewBet({
+    gameType: gameType
+  })),
+  onChangeNewBetBetOn: (betOn) => dispatch(updateNewBet({
+    betOn: betOn,
+  })),
   onSubmitNewBet: () => dispatch(newBet()),
 });
 

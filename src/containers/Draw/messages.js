@@ -17,6 +17,10 @@ export default defineMessages({
     id: 'mark-six.containers.Draw.NewBetForm.gameTypeLabel',
     defaultMessage: 'Game Type',
   },
+  betOnLabel: {
+    id: 'mark-six.containers.Draw.NewBetForm.betOnLabel',
+    defaultMessage: 'Bet On',
+  },
   submitButtonLabel: {
     id: 'mark-six.containers.Draw.NewBetForm.submitButtonLabel',
     defaultMessage: 'Add',

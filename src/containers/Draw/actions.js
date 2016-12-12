@@ -1,7 +1,6 @@
 import {
+  UPDATE_NEW_BET,
   UPDATE_CURRENT_DRAW_ID,
-  UPDATE_NEW_BET_AMOUNT,
-  UPDATE_NEW_BET_GAME_TYPE,
   NEW_BET,
   NEW_BET_SUCCESS,
   NEW_BET_ERROR,
@@ -11,19 +10,14 @@ import {
 } from './constants';
 
 
+export const updateNewBet = (bet) => ({
+  type: UPDATE_NEW_BET,
+  bet,
+});
+
 export const updateCurrentDrawID = (drawId) => ({
   type: UPDATE_CURRENT_DRAW_ID,
   drawId,
-});
-
-export const updateNewBetAmount = (betAmount) => ({
-  type: UPDATE_NEW_BET_AMOUNT,
-  betAmount,
-});
-
-export const updateNewBetGameType = (gameType) => ({
-  type: UPDATE_NEW_BET_GAME_TYPE,
-  gameType,
 });
 
 export const newBet = () => ({
