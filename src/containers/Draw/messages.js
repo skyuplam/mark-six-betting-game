@@ -57,4 +57,8 @@ export default defineMessages({
     id: 'mark-six.containers.Draw.mean',
     defaultMessage: 'Mean',
   },
+  baseSettingsHeading: {
+    id: 'mark-six.containers.Draw.BaseSettings.baseSettingsHeading',
+    defaultMessage: 'Profit Calc Base Settings',
+  },
 });

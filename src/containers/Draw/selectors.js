@@ -14,6 +14,7 @@ import {
   get
 } from 'lodash';
 
+
 const selectDrawState = () => (state) => state.get('draw');
 const selectCurrentDrawId = () => createSelector(
   selectDrawState(),
@@ -74,6 +75,7 @@ const selectBetsSummary = () => createSelector(
     })));
   }
 );
+
 
 export {
   selectDrawState,

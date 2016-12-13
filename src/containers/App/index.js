@@ -7,9 +7,9 @@ import Helmet from 'react-helmet';
 import styled from 'styled-components';
 import AppBar from 'material-ui/AppBar';
 import Drawer from 'material-ui/Drawer';
-import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import NavigationMenu from 'material-ui/svg-icons/navigation/menu';
+import { BrowserRouter, Match, Miss } from 'react-router';
 
 import {
   toggleMenu,
@@ -17,10 +17,13 @@ import {
 import {
   selectShowMenu,
 } from './selectors';
-import { BrowserRouter, Match, Miss, Link } from 'react-router';
+import MenuLink from '../../components/MenuLink';
 import Home from '../HomePage';
 import Draw from '../Draw';
+import Settings from '../Settings';
 import NotFound from '../NotFoundPage';
+import msg from './messages';
+
 
 const AppWrapper = styled.div`
   margin: 0;
@@ -55,21 +58,20 @@ function App(props) {
             open={showMenu}
             onRequestChange={onClickMenuIcon}
           >
-            <Link to="/">
-              {(param) => (
-                <MenuItem
-                  onClick={(evt) => {
-                    param.onClick(evt);
-                    onClickMenuIcon(evt);
-                  }}
-                >
-                  Home
-                </MenuItem>
-              )}
-            </Link>
+            <MenuLink
+              to="/"
+              clickHandler={onClickMenuIcon}
+              msg={msg.home}
+            />
+            <MenuLink
+              to="/settings"
+              clickHandler={onClickMenuIcon}
+              msg={msg.settings}
+            />
           </Drawer>
           <Match exactly pattern="/" component={Home} />
           <Match pattern="/draw/:id" component={Draw} />
+          <Match pattern="/settings" component={Settings} />
           <Miss component={NotFound}/>
         </div>
       </BrowserRouter>
