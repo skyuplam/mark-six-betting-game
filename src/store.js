@@ -9,6 +9,7 @@ import createReducer from './reducers';
 
 import homeSagas from './containers/HomePage/sagas';
 import drawSagas from './containers/Draw/sagas';
+import settingsSagas from './containers/Settings/sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -42,6 +43,7 @@ export default function configureStore(initialState = {}, history) {
   // Extensions
    homeSagas.map(sagaMiddleware.run);
    drawSagas.map(sagaMiddleware.run);
+   settingsSagas.map(sagaMiddleware.run);
 
   // Make reducers hot reloadable, see http://mxs.is/googmo
   /* istanbul ignore next */
