@@ -8,8 +8,15 @@ coverage
 
 # production
 build
+build*
 
 # misc
 .DS_Store
 .env
 npm-debug.log
+
+# Vim temporary files
+*~
+*.swp
+*.swo
+
