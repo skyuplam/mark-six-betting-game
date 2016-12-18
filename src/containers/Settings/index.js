@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import DataGrid from '../../components/DataGrid';
-import { injectIntl, FormattedNumber } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import {
   selectSettings,
   selectGameSettings,
@@ -16,7 +16,7 @@ import {
   mapValues,
   isNumber,
 } from 'lodash';
-import msg from './messages';
+// import msg from './messages';
 
 
 class Settings extends React.PureComponent {
