@@ -4,6 +4,7 @@ import {
   UPDATE_NEW_BET,
   NEW_BET_SUCCESS,
   FETCH_BETS_SUCCESS,
+  UPDATE_CAPITAL,
 } from './constants';
 import {
   reduce,
@@ -15,6 +16,7 @@ const initialState = fromJS({
   currentDrawId: '',
   bets: fromJS({}),
   newBet: fromJS({}),
+  capital: 0,
 });
 
 function drawReducer(state = initialState, action) {
@@ -25,6 +27,9 @@ function drawReducer(state = initialState, action) {
     case UPDATE_CURRENT_DRAW_ID:
       return state
         .set('currentDrawId', action.drawId);
+    case UPDATE_CAPITAL:
+      return state
+        .set('capital', action.capital);
     case NEW_BET_SUCCESS:
     case FETCH_BETS_SUCCESS:
       return state

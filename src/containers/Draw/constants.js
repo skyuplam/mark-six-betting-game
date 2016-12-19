@@ -6,3 +6,4 @@ export const NEW_BET_ERROR = 'mark-six-betting-game/Draw/NEW_BET_ERROR';
 export const FETCH_BETS = 'mark-six-betting-game/Draw/FETCH_BETS';
 export const FETCH_BETS_SUCCESS = 'mark-six-betting-game/Draw/FETCH_BETS_SUCCESS';
 export const FETCH_BETS_ERROR = 'mark-six-betting-game/Draw/FETCH_BETS_ERROR';
+export const UPDATE_CAPITAL = 'mark-six-betting-game/Draw/UPDATE_CAPITAL';

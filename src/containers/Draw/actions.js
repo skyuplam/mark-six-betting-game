@@ -7,6 +7,7 @@ import {
   FETCH_BETS,
   FETCH_BETS_SUCCESS,
   FETCH_BETS_ERROR,
+  UPDATE_CAPITAL,
 } from './constants';
 
 
@@ -47,4 +48,9 @@ export const betsFetched = (bets) => ({
 export const betsFetchingError = (error) => ({
   type: FETCH_BETS_ERROR,
   error,
+});
+
+export const updateCapital = (capital) => ({
+  type: UPDATE_CAPITAL,
+  capital,
 });

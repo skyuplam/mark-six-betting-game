@@ -5,7 +5,11 @@ import { injectIntl, FormattedDate, FormattedNumber } from 'react-intl';
 import {
   isEmpty,
   toNumber,
+  map,
 } from 'lodash';
+import styled from 'styled-components';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
 import NewBetForm from '../../components/NewBetForm';
 import DataGrid from '../../components/DataGrid';
 import BetSummary from '../../components/BetSummary';
@@ -14,7 +18,11 @@ import {
   updateNewBet,
   newBet,
   fetchBets,
+  updateCapital,
 } from './actions';
+import {
+  fetchSettings,
+} from '../Settings/actions';
 import {
   selectCurrentDraw,
   selectBetAmount,
@@ -22,6 +30,8 @@ import {
   selectBetOn,
   selectBets,
   selectBetsSummary,
+  selectProfitLoss,
+  selectCapital,
 } from './selectors';
 import msg from './messages';
 import {
@@ -29,6 +39,10 @@ import {
   gameBets
 } from './games';
 
+const Wrapper = styled(Paper)`
+  margin: 4px 8px;
+  padding: 0 8px 16px 16px;
+`;
 
 export class Draw extends React.PureComponent {
   componentDidMount() {
@@ -44,14 +58,18 @@ export class Draw extends React.PureComponent {
       onChangeNewBetGameType,
       onChangeNewBetBetOn,
       onSubmitNewBet,
+      onChangeCapital,
       betAmount,
       gameType,
       betOn,
       bets,
       betsStat,
+      profitLoss,
+      capital,
     } = this.props;
     const {
       formatMessage,
+      formatNumber,
     } = this.props.intl;
 
     const betSummaryColMeta = [{
@@ -174,6 +192,28 @@ export class Draw extends React.PureComponent {
               useFixedHeader
               enableInfiniteScroll
             />
+            <DataGrid
+              header={'Profit and Loss'}
+              results={map(profitLoss, (v, k) => ({
+                term: formatMessage(msg[k]),
+                value: k.substr(-4, 4) === 'Rate' ? formatNumber(v, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                }) : formatNumber(v),
+              }))}
+              bodyHeight={260}
+              useFixedHeader
+              enableInfiniteScroll
+            />
+            <Wrapper>
+              <TextField
+                floatingLabelText={'Capital'}
+                type="number"
+                onChange={onChangeCapital}
+              /><br />
+              <p>Pool 1 SD Profit: {formatNumber(capital + profitLoss.above1SD)}</p>
+              <p>Pool 2 SD Profit: {formatNumber(capital + profitLoss.above2SD)}</p>
+            </Wrapper>
           </div>
         }
       </div>
@@ -188,12 +228,15 @@ const mapStateToProps = createStructuredSelector({
   betOn: selectBetOn(),
   bets: selectBets(),
   betsStat: selectBetsSummary(),
+  profitLoss: selectProfitLoss(),
+  capital: selectCapital(),
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onLoadComponent: (props) => {
     dispatch(updateCurrentDrawID(props.params.id));
     dispatch(fetchBets());
+    dispatch(fetchSettings());
   },
   onChangeNewBetAmount: (evt) => dispatch(updateNewBet({
     betAmount: toNumber(evt.target.value),
@@ -204,6 +247,7 @@ const mapDispatchToProps = (dispatch) => ({
   onChangeNewBetBetOn: (betOn) => dispatch(updateNewBet({
     betOn: betOn,
   })),
+  onChangeCapital: (evt) => dispatch(updateCapital(toNumber(evt.target.value))),
   onSubmitNewBet: () => dispatch(newBet()),
 });
 

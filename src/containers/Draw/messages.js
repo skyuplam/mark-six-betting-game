@@ -61,4 +61,32 @@ export default defineMessages({
     id: 'mark-six.containers.Draw.BaseSettings.baseSettingsHeading',
     defaultMessage: 'Profit Calc Base Settings',
   },
+  expectedTotalProfit: {
+    id: 'mark-six.containers.Draw.expectedTotalProfit',
+    defaultMessage: 'Expected Total Profit',
+  },
+  expectedTotalProfitRate: {
+    id: 'mark-six.containers.Draw.expectedTotalProfitRate',
+    defaultMessage: 'Expected Total Profit Rate',
+  },
+  stdDev: {
+    id: 'mark-six.containers.Draw.stdDev',
+    defaultMessage: 'Standard Deviation',
+  },
+  above1SD: {
+    id: 'mark-six.containers.Draw.above1SD',
+    defaultMessage: 'Above 1 SD',
+  },
+  above1SDRate: {
+    id: 'mark-six.containers.Draw.above1SDRate',
+    defaultMessage: 'Above 1 SD Rate',
+  },
+  above2SD: {
+    id: 'mark-six.containers.Draw.above2SD',
+    defaultMessage: 'Above 2 SD',
+  },
+  above2SDRate: {
+    id: 'mark-six.containers.Draw.above2SDRate',
+    defaultMessage: 'Above 2 SD Rate',
+  },
 });
