@@ -211,8 +211,15 @@ export class Draw extends React.PureComponent {
                 type="number"
                 onChange={onChangeCapital}
               /><br />
-              <p>Pool 1 SD Profit: {formatNumber(capital + profitLoss.above1SD)}</p>
-              <p>Pool 2 SD Profit: {formatNumber(capital + profitLoss.above2SD)}</p>
+              <p>Capital: {formatNumber(capital)}</p>
+              <p>Pool 1 SD Profit: {
+                formatNumber(capital + profitLoss.above1SD, {
+                  maximumFractionDigits: 2,
+              })}</p>
+            <p>Pool 2 SD Profit: {
+              formatNumber(capital + profitLoss.above2SD, {
+                maximumFractionDigits: 2,
+            })}</p>
             </Wrapper>
           </div>
         }
