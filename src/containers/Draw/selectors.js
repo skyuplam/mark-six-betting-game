@@ -6,6 +6,9 @@ import {
   selectGameSettings,
 } from '../Settings/selectors';
 import {
+  hasDraw,
+} from './games';
+import {
   sumBy,
   groupBy,
   keys,
@@ -21,6 +24,8 @@ import {
   isEmpty,
   mapValues,
   indexOf,
+  isArray,
+  assign,
 } from 'lodash';
 
 
@@ -56,6 +61,7 @@ const selectBetOn = () => createSelector(
   (newBet) => newBet.betOn,
 );
 
+
 const selectBets = () => createSelector(
   selectDrawState(),
   (draw) => draw.get('bets').toArray(),
@@ -86,38 +92,62 @@ const selectBetsSummary = () => createSelector(
   }
 );
 
+// Sum all bets by groupping by gameType and bet number
 const selectBetSum = () => createSelector(
   selectBets(),
   (bets) => chain(bets)
     .groupBy('gameType')
-  .mapValues((bs) =>
+    .mapValues((bs) =>
       chain(bs)
-      .groupBy('betOn')
-      .mapValues((v) => sumBy(v, 'betAmount'))
-      .value()
+        .reduce((expended, b) => {
+          if (isArray(b.betOn)) {
+            return concat(expended,
+              map(b.betOn, (num) => ({
+                betOn: num,
+                betAmount: b.betAmount,
+              }))
+            );
+          }
+          return expended.push(b);
+        }, [])
+        .groupBy('betOn')
+        .mapValues((v) => sumBy(v, 'betAmount'))
+        .value()
     ).value()
 );
 
 
 const selectProfitLossPerGame = () => createSelector(
+  selectBets(),
   selectBetSum(),
   selectGameSettings(),
-  (bets, settings) => mapValues(bets, (bet, key) => {
-    const totalBetAmount = chain(bet).reduce((sum, b) => sum + b, 0).value();
+  (bets, betSum, settings) => mapValues(betSum, (bet, key) => {
+    const totalBetAmount = chain(bets).filter((b) => b.game === key)
+      .sumBy('betAmount');
     const game = chain(settings)
       .reduce((p, n) => n.game === key ? p = n : p).value();
+    const draws = hasDraw(key);
+    // filter the number for draw
     const remainningUnbettedNumber = chain(range(1, 50))
-      .differenceBy(map(bet, (v, k) => k), toInteger).value();
+      .differenceBy(map(bet, (v, k) => k), toInteger)
+      .filter((n) => Boolean(draws) || indexOf(draws, n) === -1).value();
     return {
       game: key,
-      profitLossWin: chain(bet).mapValues((v) =>
-        v * game.winningProfit + (totalBetAmount - v) * game.lossProfit
-      ).value(),
+      profitLossWin: assign(
+        chain(bet).mapValues((v, k) =>
+          v * game.winningProfit + (totalBetAmount - v) * game.lossProfit
+        ).value(),
+        !Boolean(draws) ? {} :
+          chain(draws).reduce((d, n) => {
+            d[n] = totalBetAmount * game.drawProfit;
+            return d;
+          }, {}),
+      ),
       profitLossLoss: {
         unBettedNumbers: remainningUnbettedNumber,
         profit: isEmpty(remainningUnbettedNumber) ? 0 :
           totalBetAmount * game.lossProfit,
-      }
+      },
     };
   })
 );

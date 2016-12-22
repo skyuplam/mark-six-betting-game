@@ -46,6 +46,8 @@ export function* bet() {
       body: JSON.stringify(assign({}, newBet, {
         bettedAt: new Date(),
         drawId: currentDrawId,
+      }, {
+        betOn: JSON.parse(newBet.betOn),
       })),
     });
     const betsURI = join([requestURL, '_find'], '/');

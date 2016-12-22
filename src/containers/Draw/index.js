@@ -148,6 +148,7 @@ export class Draw extends React.PureComponent {
       },
     ];
 
+
     return (
       <div>
         <h1>Draw</h1>
@@ -163,7 +164,7 @@ export class Draw extends React.PureComponent {
           gameTypeHandler={(evt, key, payload) => onChangeNewBetGameType(payload)}
           betOnLabel={formatMessage(msg.betOnLabel)}
           betOn={betOn}
-          betOnNumbers={gameBets(gameType)}
+          betOnNumbers={gameBets(gameType, (t) => formatMessage(msg[t]))}
           betOnHandler={(evt, key, payload) => onChangeNewBetBetOn(payload)}
           submitButtonLabel={formatMessage(msg.submitButtonLabel)}
           submitHandler={onSubmitNewBet}

@@ -63,7 +63,7 @@ const NewBetForm = ({
         onChange={betOnHandler}
       >
         {betOnNumbers.map((g) => (
-          <MenuItem key={g} value={g} primaryText={g} />
+          <MenuItem key={g.text} value={g.value} primaryText={g.text} />
         ))}
       </SelectField>
       <FlatButton

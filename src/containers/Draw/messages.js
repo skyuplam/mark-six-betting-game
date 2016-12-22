@@ -89,4 +89,16 @@ export default defineMessages({
     id: 'mark-six.containers.Draw.above2SDRate',
     defaultMessage: 'Above 2 SD Rate',
   },
+  SN_LARGE_SMALL_SMALL: {
+    id: 'mark-six.containers.Draw.gameType.options.SN_LARGE_SMALL_SMALL',
+    defaultMessage: 'Small',
+  },
+  SN_LARGE_SMALL_LARGE: {
+    id: 'mark-six.containers.Draw.gameType.options.SN_LARGE_SMALL_LARGE',
+    defaultMessage: 'Large',
+  },
+  SN_LARGE_SMALL_DRAW: {
+    id: 'mark-six.containers.Draw.gameType.options.SN_LARGE_SMALL_DRAW',
+    defaultMessage: 'Draw',
+  },
 });

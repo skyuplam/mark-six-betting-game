@@ -4,9 +4,14 @@ import {
   toString,
 } from 'lodash';
 
-export const SPECIAL_NUMBER_E = 'SNE';
-export const SPECIAL_NUMBER_A = 'SNA';
-export const SPECIAL_NUMBER_LARGE_SMALL = 'SNLargeSmall';
+import {
+  SPECIAL_NUMBER_E,
+  SPECIAL_NUMBER_A,
+  SPECIAL_NUMBER_LARGE_SMALL,
+  SN_LARGE_SMALL_LARGE,
+  SN_LARGE_SMALL_SMALL,
+} from './constants';
+
 
 export const gameTypes = [
   {
@@ -23,11 +28,49 @@ export const gameTypes = [
   },
 ];
 
-export const gameBets = (type) => {
-  switch (type) {
-    case SPECIAL_NUMBER_LARGE_SMALL:
-      return ['Large', 'Small', 'Draw'];
+
+function gameTypeOptions(option) {
+  switch (option) {
+    case SN_LARGE_SMALL_LARGE:
+      return JSON.stringify(range(26, 50));
+    case SN_LARGE_SMALL_SMALL:
+      return JSON.stringify(range(1, 26));
     default:
-      return map(range(1, 50), (d) => toString(d));
+      return option;
   }
 }
+
+export function hasDraw(gameType) {
+  switch (gameType) {
+    case SPECIAL_NUMBER_LARGE_SMALL:
+      return [25];
+    default:
+      return false;
+  }
+}
+
+/*
+ * @type: constan, game type fron ./constants
+ * @formatMessage: function, intl.formatMessage.
+ *   e.g. (t) => intl.formatMessage(msg[t])
+ *
+ * @returns an array of object with text and value attributes.
+ *    e.g. [{ text: 1, value: 1}]
+ */
+export const gameBets = (type, formatMessage) => {
+  switch (type) {
+    case SPECIAL_NUMBER_LARGE_SMALL:
+      return map([
+        SN_LARGE_SMALL_LARGE,
+        SN_LARGE_SMALL_SMALL,
+      ], (t) => ({
+        text: formatMessage ? formatMessage(t) : t,
+        value: gameTypeOptions(t),
+      }));
+    default:
+      return map(range(1, 50), (d) => ({
+        text: toString(d),
+        value: toString(d),
+      }));
+  }
+};
