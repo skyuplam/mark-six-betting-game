@@ -16,7 +16,7 @@ const initialState = fromJS({
   currentDrawId: '',
   bets: fromJS({}),
   newBet: fromJS({}),
-  capital: 0,
+  capital: 1000000,
 });
 
 function drawReducer(state = initialState, action) {

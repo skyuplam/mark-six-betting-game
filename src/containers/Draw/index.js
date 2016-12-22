@@ -210,6 +210,7 @@ export class Draw extends React.PureComponent {
               <TextField
                 floatingLabelText={'Capital'}
                 type="number"
+                defaultValue={capital}
                 onChange={onChangeCapital}
               /><br />
               <p>Capital: {formatNumber(capital)}</p>
