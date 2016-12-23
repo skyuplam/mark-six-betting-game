@@ -1,3 +1,10 @@
+import {
+  SPECIAL_NUMBER_A,
+  SPECIAL_NUMBER_E,
+  SPECIAL_NUMBER_LARGE_SMALL,
+} from '../src/containers/Draw/constants';
+
+
 const config = {
   version: '1.0.0',
   db: {

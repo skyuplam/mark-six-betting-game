@@ -3646,9 +3646,9 @@ math-expression-evaluator@^1.2.14:
   dependencies:
     lodash.indexof "^4.0.5"
 
-mathjs@^3.8.0:
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-3.8.0.tgz#232af4871e4e8249f5b46a98ede7deae92026634"
+mathjs@^3.8.1:
+  version "3.8.1"
+  resolved "https://registry.yarnpkg.com/mathjs/-/mathjs-3.8.1.tgz#5608d2bf132edb4cfd6bba1a6cba3925d34e9dd6"
   dependencies:
     complex.js "2.0.1"
     decimal.js "5.0.8"

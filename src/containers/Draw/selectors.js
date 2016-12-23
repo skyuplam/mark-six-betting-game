@@ -152,7 +152,6 @@ const selectProfitLossPerGame = () => createSelector(
       profit: isEmpty(remainningUnbettedNumber) ? 0 :
         totalBetAmount * game.lossProfit,
     };
-    debugger;
     return {
       game: key,
       profitLossWin,
