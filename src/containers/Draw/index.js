@@ -32,6 +32,8 @@ import {
   selectBetsSummary,
   selectProfitLoss,
   selectCapital,
+  selectProfitLossPerNumSum,
+  selectProfitLossPerGame,
 } from './selectors';
 import msg from './messages';
 import {
@@ -239,6 +241,8 @@ const mapStateToProps = createStructuredSelector({
   betsStat: selectBetsSummary(),
   profitLoss: selectProfitLoss(),
   capital: selectCapital(),
+  perNum: selectProfitLossPerNumSum(),
+  perGame: selectProfitLossPerGame(),
 });
 
 const mapDispatchToProps = (dispatch) => ({

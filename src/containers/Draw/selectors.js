@@ -122,32 +122,41 @@ const selectProfitLossPerGame = () => createSelector(
   selectBetSum(),
   selectGameSettings(),
   (bets, betSum, settings) => mapValues(betSum, (bet, key) => {
-    const totalBetAmount = chain(bets).filter((b) => b.game === key)
-      .sumBy('betAmount');
+    const totalBetAmount = chain(bets).filter((b) => b.gameType === key)
+      .sumBy('betAmount').value();
     const game = chain(settings)
-      .reduce((p, n) => n.game === key ? p = n : p).value();
+      .reduce((p, n) => n.game === key ? p = n : p).value() || {
+        winningProfit: 0,
+        lossProfit: 0,
+        drawProfit: 0,
+      };
     const draws = hasDraw(key);
     // filter the number for draw
     const remainningUnbettedNumber = chain(range(1, 50))
       .differenceBy(map(bet, (v, k) => k), toInteger)
-      .filter((n) => Boolean(draws) || indexOf(draws, n) === -1).value();
+      .filter((n) => isEmpty(draws) || indexOf(draws, n) === -1).value();
+
+    const profitLossWin = assign(
+      chain(bet).mapValues((v, k) =>
+        v * game.winningProfit + (totalBetAmount - v) * game.lossProfit
+      ).value(),
+      isEmpty(draws) ? {} :
+        chain(draws).reduce((d, n) => {
+          d[n] = totalBetAmount * game.drawProfit;
+          return d;
+        }, {}).value(),
+    );
+
+    const profitLossLoss = {
+      unBettedNumbers: remainningUnbettedNumber,
+      profit: isEmpty(remainningUnbettedNumber) ? 0 :
+        totalBetAmount * game.lossProfit,
+    };
+    debugger;
     return {
       game: key,
-      profitLossWin: assign(
-        chain(bet).mapValues((v, k) =>
-          v * game.winningProfit + (totalBetAmount - v) * game.lossProfit
-        ).value(),
-        !Boolean(draws) ? {} :
-          chain(draws).reduce((d, n) => {
-            d[n] = totalBetAmount * game.drawProfit;
-            return d;
-          }, {}),
-      ),
-      profitLossLoss: {
-        unBettedNumbers: remainningUnbettedNumber,
-        profit: isEmpty(remainningUnbettedNumber) ? 0 :
-          totalBetAmount * game.lossProfit,
-      },
+      profitLossWin,
+      profitLossLoss,
     };
   })
 );
@@ -211,6 +220,8 @@ export {
   selectGameType,
   selectBets,
   selectBetsSummary,
+  selectProfitLossPerNumSum,
+  selectProfitLossPerGame,
   selectProfitLoss,
   selectCapital,
 }
